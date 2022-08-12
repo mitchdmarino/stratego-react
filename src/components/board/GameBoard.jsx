@@ -1,24 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
 
+//components 
+import Space from './Space'
+
+
 // styled components
 const Board = styled.div`
     display: grid;
     grid-template-rows: repeat(10, 60px);
     grid-template-columns: repeat(10, 60px);
 `
-const LightSpace = styled.div`
-    background-color: lightgreen;
-    border: 2px solid black;
-`
-const DarkSpace = styled.div`
-    background-color: green;
-    border: 2px solid black;    
-`
-const LakeSpace = styled.div`
-    background-color: blue;
-    border: 2px solid black;    
-`
+
 // array for game board
 let gameSpaceArray = []
 for (let i=0;i<10;i++) {
@@ -47,17 +40,42 @@ export default function GameBoard() {
     const spaces = gameSpaceArray.map((square,i) => {
         if (square === 'blue') {
             return (
-                <LakeSpace>{i}</LakeSpace>
+                <Space ind={i} key={i} color={'blue'}/>
             )
         }
         else if (square === 'lightgreen'){
-            return (
-                <LightSpace>{i}</LightSpace>
-            )
+            if (i<40){
+                return (
+                    <Space ind={i} key={i} color={'lightgreen'} soldier={'red'} />
+                )
+            }
+            if (i>59){
+                return (
+                    <Space ind={i} key={i} color={'lightgreen'} soldier={'blue'} />
+                )
+            }
+            else {
+                return (
+                    <Space ind={i} key={i} color={'lightgreen'} />
+                )
+            }
+            
         } else {
-            return (
-                <DarkSpace>{i}</DarkSpace>
-            )
+            if (i<40){
+                return (
+                    <Space ind={i} key={i} color={'green'} soldier={'red'} />
+                )
+            }
+            if (i>59){
+                return (
+                    <Space ind={i} key={i} color={'green'} soldier={'blue'} />
+                )
+            }
+            else {
+                return (
+                    <Space ind={i} key={i} color={'green'} />
+                )
+            }
         }
     })
 
