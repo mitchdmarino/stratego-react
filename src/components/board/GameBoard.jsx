@@ -46,34 +46,34 @@ export default function GameBoard() {
         else if (square === 'lightgreen'){
             if (i<40){
                 return (
-                    <Space ind={i} key={i} color={'lightgreen'} soldier={'red'} />
+                    <Space ind={i} key={i} color={'lightgreen'} pawn={'red'} />
                 )
             }
             if (i>59){
                 return (
-                    <Space ind={i} key={i} color={'lightgreen'} soldier={'blue'} />
+                    <Space ind={i} key={i} color={'lightgreen'} pawn={'blue'} />
                 )
             }
             else {
                 return (
-                    <Space ind={i} key={i} color={'lightgreen'} />
+                    <Space ind={i} key={i} color={'lightgreen'} pawn={null}/>
                 )
             }
             
         } else {
             if (i<40){
                 return (
-                    <Space ind={i} key={i} color={'green'} soldier={'red'} />
+                    <Space ind={i} key={i} color={'green'} pawn={'red'} />
                 )
             }
             if (i>59){
                 return (
-                    <Space ind={i} key={i} color={'green'} soldier={'blue'} />
+                    <Space ind={i} key={i} color={'green'} pawn={'blue'} />
                 )
             }
             else {
                 return (
-                    <Space ind={i} key={i} color={'green'} />
+                    <Space ind={i} key={i} color={'green'} pawn={null} />
                 )
             }
         }
