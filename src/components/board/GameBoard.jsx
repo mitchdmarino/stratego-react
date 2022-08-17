@@ -1,5 +1,5 @@
 // https://www.youtube.com/watch?v=coi5AoV53Es&list=PLBmRxydnERkysOgOS917Ojc_-uisgb8Aj&index=3
-
+import { useRef } from 'react'
 import styled from 'styled-components'
 
 //components 
@@ -63,16 +63,27 @@ for (let j=verticalAxis.length-1;j>=0;j--) {
             (i===2 && j===4) || (i===6 && j===4)  ||
             (i===3 && j===5) || (i===7 && j===5)  ||
             (i===3 && j===4) || (i===7 && j===4) ) {
-            gameSpaceArray.push(<Space key={`${i}${j}`} color={'blue'} ind={`${horizontalAxis[i]}${verticalAxis[j]}`}/>)
+            gameSpaceArray.push(<Space 
+                                    key={`${i}${j}`} 
+                                    color={'blue'} 
+                                    ind={`${horizontalAxis[i]}${verticalAxis[j]}`}/>)
             }
         // create checkerboard appearance 
         else if (
             (i%2===0 && j%2===0) || 
             (i%2>0 && j%2>0) ) {
-                gameSpaceArray.push(<Space key={`${i}${j}`} color={'green'} ind={`${horizontalAxis[i]}${verticalAxis[j]}`} pawn={piece}/>)  
+                gameSpaceArray.push(<Space 
+                                        key={`${i}${j}`} 
+                                        color={'green'} 
+                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
+                                        pawn={piece}/>)  
             } 
             else {
-                gameSpaceArray.push(<Space key={`${i}${j}`} color={'lightgreen'} ind={`${horizontalAxis[i]}${verticalAxis[j]}`} pawn={piece}/>)  
+                gameSpaceArray.push(<Space 
+                                        key={`${i}${j}`} 
+                                        color={'lightgreen'} 
+                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
+                                        pawn={piece}/>)  
             }         
     }
 }
@@ -80,12 +91,52 @@ for (let j=verticalAxis.length-1;j>=0;j--) {
 
 
 export default function GameBoard() {
+    // render each individual space with starting piece config 
     const spaces = gameSpaceArray.map(space => {
         return space
     })
+    const gameboardRef = useRef(null)
+    let activePiece = null
+
+    function grabPiece(e) {
+        if (e.target.classList.contains('blue-piece')) {
+            // console.log(e.target)
+            activePiece = e.target
+            const x = e.clientX - 25
+            const y = e.clientY - 25
+            e.target.style.position = 'absolute'
+            e.target.style.left = `${x}px`
+            e.target.style.top = `${y}px`
+        }
+    }
+
+    function movePiece(e) {
+        if (activePiece) {
+            // console.log(e.target)
+            const x = e.clientX - 25
+            const y = e.clientY - 25
+            e.target.style.position = 'absolute'
+            e.target.style.left = `${x}px`
+            e.target.style.top = `${y}px`
+        }
+    }
+
+    function dropPiece() {
+        if (activePiece) {
+            activePiece = null
+        }
+    }
+
+
+   
 
     return (
-        <Board>
+        <Board 
+            ref={gameboardRef}
+            onMouseDown={e => grabPiece(e)}
+            onMouseMove={e => movePiece(e)}
+            onMouseUp={dropPiece}
+        >
             {spaces}
         </Board>
     )
