@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 // components 
-import Soldier from '../soldier'
+import Soldier from '../Soldier'
 
 const NewSpace = styled.div`
     border: 2px solid black;
@@ -14,23 +14,23 @@ const NewSpace = styled.div`
     display: flex;    
 `
 
-export default function Space ({ ind, color, pawn }) {
+export default function Space ({ ind, color, pawn, revealed }) {
     
-    const [soldier, setSoldier] = useState(pawn)
-
-    var renderSoldier = null
-    if (soldier) {
-        renderSoldier = <Soldier color={soldier} />
-    }
-    
-    // handle the click of a space
     const handleClick = (ind) => {
         console.log(`space ${ind} was clicked`)
     }
+
+    let renderPawn = null
+
+    if (pawn) {
+        renderPawn = <Soldier piece={pawn}/>
+    }
+
+    
     
     return (
         <NewSpace onClick={event => handleClick(ind)} style={{backgroundColor: color}}>
-            {renderSoldier}
+            {renderPawn}
         </NewSpace>
     )
     
