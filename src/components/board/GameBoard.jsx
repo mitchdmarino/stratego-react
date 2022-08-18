@@ -38,7 +38,6 @@ const Board = styled.div`
     display: grid;
     grid-template-rows: repeat(10, 60px);
     grid-template-columns: repeat(10, 60px);
-    margin-left: 150px;
     width: 600px;
       
 `
@@ -167,13 +166,17 @@ export default function GameBoard() {
    
 
     return (
-        <Board 
-            ref={gameboardRef}
+        <div
+            className='gameboard-container'
             onMouseDown={e => grabPiece(e)}
             onMouseMove={e => movePiece(e)}
-            onMouseUp={dropPiece}
-        >
-            {spaces}
-        </Board>
+            onMouseUp={dropPiece}>
+            <Board 
+            ref={gameboardRef}
+            
+            >
+                {spaces}
+            </Board>
+        </div>
     )
 }

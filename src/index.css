@@ -20,3 +20,11 @@ code {
 .blue-piece:active {
   cursor: grabbing
 }
+
+.gameboard-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
+  background-color: black;
+}
