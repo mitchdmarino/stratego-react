@@ -1,5 +1,5 @@
 // https://www.youtube.com/watch?v=coi5AoV53Es&list=PLBmRxydnERkysOgOS917Ojc_-uisgb8Aj&index=3
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 //components 
@@ -37,7 +37,10 @@ const blueSoldierRanks = [1,2,3,3,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,8,9,9,9,
 const Board = styled.div`
     display: grid;
     grid-template-rows: repeat(10, 60px);
-    grid-template-columns: repeat(10, 60px);   
+    grid-template-columns: repeat(10, 60px);
+    margin-left: 150px;
+    width: 600px;
+      
 `
 const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
@@ -96,34 +99,67 @@ export default function GameBoard() {
         return space
     })
     const gameboardRef = useRef(null)
-    let activePiece = null
+    const [activePiece, setActivePiece] = useState(null)
 
     function grabPiece(e) {
-        if (e.target.classList.contains('blue-piece')) {
+        const gameboard = gameboardRef.current
+        console.log(gameboard.style)
+        if (e.target.classList.contains('blue-piece') && gameboard && !activePiece) {
             // console.log(e.target)
-            activePiece = e.target
+            const element = e.target
+            setActivePiece(element)
             const x = e.clientX - 25
             const y = e.clientY - 25
-            e.target.style.position = 'absolute'
-            e.target.style.left = `${x}px`
-            e.target.style.top = `${y}px`
+            element.style.position = 'absolute'
+            element.style.left = `${x}px`
+            element.style.top = `${y}px`
         }
     }
 
     function movePiece(e) {
-        if (activePiece) {
+        const gameboard = gameboardRef.current
+        if (activePiece && gameboard) {
             // console.log(e.target)
+            const minX = gameboard.offsetLeft 
+            const minY = gameboard.offsetTop 
+            const maxX = gameboard.offsetLeft + 560 
+            const maxY = gameboard.offsetTop + 560
             const x = e.clientX - 25
             const y = e.clientY - 25
-            e.target.style.position = 'absolute'
-            e.target.style.left = `${x}px`
-            e.target.style.top = `${y}px`
+            activePiece.style.position = 'absolute'
+            
+            //If x is smaller than minimum amount
+            if (x < minX) {
+                activePiece.style.left = `${minX}px`;
+            }
+            //If x is bigger than maximum amount
+            else if (x > maxX) {
+                activePiece.style.left = `${maxX}px`;
+            }
+            //If x is in the constraints
+            else {
+                activePiece.style.left = `${x}px`;
+            }
+
+            //If y is smaller than minimum amount
+            if (y < minY) {
+                activePiece.style.top = `${minY}px`;
+            }
+            //If y is bigger than maximum amount
+            else if (y > maxY) {
+                activePiece.style.top = `${maxY}px`;
+            }
+            //If y is in the constraints
+            else {
+                activePiece.style.top = `${y}px`;
+            }
+            console.log(`is our maxX ${maxX} greater than our x ${x}?`)
         }
     }
 
     function dropPiece() {
         if (activePiece) {
-            activePiece = null
+            setActivePiece(null)
         }
     }
 
