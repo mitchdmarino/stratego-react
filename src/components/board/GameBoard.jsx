@@ -1,5 +1,5 @@
 // https://www.youtube.com/watch?v=coi5AoV53Es&list=PLBmRxydnERkysOgOS917Ojc_-uisgb8Aj&index=3
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import styled from 'styled-components'
 
 //components 
@@ -44,61 +44,19 @@ const Board = styled.div`
 const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
 // array for game board
-let gameSpaceArray = []
-for (let j=verticalAxis.length-1;j>=0;j--) {
-    for (let i=0;i<horizontalAxis.length;i++){
-        //We have designated "lake" spaces that are not passable. Make them lightblue. 
-        let piece = null
-        redTeam.forEach(p => {
-            if (p.x === i && p.y === j) {
-                piece = p
-            }
-        })
-        blueTeam.forEach(p => {
-            if (p.x === i && p.y === j) {
-                piece = p
-            }
-        })
-        
-        if (
-            (i===2 && j===5) || (i===6 && j===5) ||
-            (i===2 && j===4) || (i===6 && j===4)  ||
-            (i===3 && j===5) || (i===7 && j===5)  ||
-            (i===3 && j===4) || (i===7 && j===4) ) {
-            gameSpaceArray.push(<Space 
-                                    key={`${i}${j}`} 
-                                    color={'blue'} 
-                                    ind={`${horizontalAxis[i]}${verticalAxis[j]}`}/>)
-            }
-        // create checkerboard appearance 
-        else if (
-            (i%2===0 && j%2===0) || 
-            (i%2>0 && j%2>0) ) {
-                gameSpaceArray.push(<Space 
-                                        key={`${i}${j}`} 
-                                        color={'green'} 
-                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
-                                        pawn={piece}/>)  
-            } 
-            else {
-                gameSpaceArray.push(<Space 
-                                        key={`${i}${j}`} 
-                                        color={'lightgreen'} 
-                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
-                                        pawn={piece}/>)  
-            }         
-    }
-}
+
+
 
 
 
 export default function GameBoard() {
-    // render each individual space with starting piece config 
-    const spaces = gameSpaceArray.map(space => {
-        return space
-    })
+    
     const gameboardRef = useRef(null)
     const [activePiece, setActivePiece] = useState(null)
+    const [redPieces, setRedPieces] = useState(redTeam)
+    const [bluePieces, setBluePieces] = useState(blueTeam)
+
+    
 
     function grabPiece(e) {
         const gameboard = gameboardRef.current
@@ -156,13 +114,70 @@ export default function GameBoard() {
         }
     }
 
-    function dropPiece() {
+    function dropPiece(e) {
+        console.log(e)
         if (activePiece) {
+            setBluePieces(value => {
+                const pieces = value.map((p) => {
+                    return p
+                })
+                
+                return pieces
+
+            })
             setActivePiece(null)
         }
     }
+    let gameSpaceArray = []
+    for (let j=verticalAxis.length-1;j>=0;j--) {
+        for (let i=0;i<horizontalAxis.length;i++){
+            //We have designated "lake" spaces that are not passable. Make them lightblue. 
+            let piece = null
+            redPieces.forEach(p => {
+                if (p.x === i && p.y === j) {
+                    piece = p
+                }
+            })
+            bluePieces.forEach(p => {
+                if (p.x === i && p.y === j) {
+                    piece = p
+                }
+            })
+            
+            if (
+                (i===2 && j===5) || (i===6 && j===5) ||
+                (i===2 && j===4) || (i===6 && j===4)  ||
+                (i===3 && j===5) || (i===7 && j===5)  ||
+                (i===3 && j===4) || (i===7 && j===4) ) {
+                gameSpaceArray.push(<Space 
+                                        key={`${i}${j}`} 
+                                        color={'blue'} 
+                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`}/>)
+                }
+            // create checkerboard appearance 
+            else if (
+                (i%2===0 && j%2===0) || 
+                (i%2>0 && j%2>0) ) {
+                    gameSpaceArray.push(<Space 
+                                            key={`${i}${j}`} 
+                                            color={'green'} 
+                                            ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
+                                            pawn={piece}/>)  
+                } 
+                else {
+                    gameSpaceArray.push(<Space 
+                                            key={`${i}${j}`} 
+                                            color={'lightgreen'} 
+                                            ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
+                                            pawn={piece}/>)  
+                }         
+        }
+    }
 
-
+    // render each individual space with starting piece config 
+    const spaces = gameSpaceArray.map(space => {
+        return space
+    })
    
 
     return (
@@ -170,7 +185,7 @@ export default function GameBoard() {
             className='gameboard-container'
             onMouseDown={e => grabPiece(e)}
             onMouseMove={e => movePiece(e)}
-            onMouseUp={dropPiece}>
+            onMouseUp={e =>dropPiece(e)}>
             <Board 
             ref={gameboardRef}
             
