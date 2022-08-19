@@ -1,36 +1,21 @@
 // https://www.youtube.com/watch?v=coi5AoV53Es&list=PLBmRxydnERkysOgOS917Ojc_-uisgb8Aj&index=3
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
 //components 
 import Space from './Space'
 
-import RedSoldier from '../utils/RedSoldiers'
-import BlueSoldier from '../utils/BlueSoldiers'
+import redTeam from '../utils/RedSoldiers'
+import blueTeam from '../utils/BlueSoldiers'
 import shuffle from '../utils/shuffle'
+import Ruler from '../../Rules/ruler'
 
 
 
-let redTeam = []
-for (let i=0; i<10; i++) {
-    for (let j=9; j>5; j--) {
-        redTeam.push(new RedSoldier(i,j))
-    }
-}
-const redSoldierRanks = [1,2,3,3,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,8,9,9,9,9,9,9,9,9,'s','b','b','b','b','b','b','f']
-    redTeam.forEach(item => {
-        item.rank = shuffle(redSoldierRanks).pop()
-    })
-let blueTeam = []
-for (let i=0; i<10; i++) {
-    for (let j=0; j<4; j++) {
-        blueTeam.push(new BlueSoldier(i,j))
-    }
-}
-const blueSoldierRanks = [1,2,3,3,4,4,4,5,5,5,5,6,6,6,6,7,7,7,7,8,8,8,8,8,9,9,9,9,9,9,9,9,'s','b','b','b','b','b','b','f']
-    blueTeam.forEach(item => {
-        item.rank = shuffle(blueSoldierRanks).pop()
-    })
+
+
+
+  
 
 
 // styled components
@@ -55,16 +40,20 @@ export default function GameBoard() {
     const [activePiece, setActivePiece] = useState(null)
     const [redPieces, setRedPieces] = useState(redTeam)
     const [bluePieces, setBluePieces] = useState(blueTeam)
-
+    const [gridX, setGridX] = useState(0)
+    const [gridY, setGridY] = useState(0)
+    const ruler = new Ruler()
     
 
     function grabPiece(e) {
         const gameboard = gameboardRef.current
         console.log(gameboard.style)
-        if (e.target.classList.contains('blue-piece') && gameboard && !activePiece) {
+        if ((e.target.classList.contains('blue-piece') || e.target.classList.contains('red-piece') )&& gameboard && !activePiece) {
             // console.log(e.target)
             const element = e.target
             setActivePiece(element)
+            setGridX(Math.floor((e.clientX - gameboard.offsetLeft)/60)) 
+            setGridY(Math.abs(Math.ceil((e.clientY - gameboard.offsetTop - 600)/60)))
             const x = e.clientX - 25
             const y = e.clientY - 25
             element.style.position = 'absolute'
@@ -110,21 +99,175 @@ export default function GameBoard() {
             else {
                 activePiece.style.top = `${y}px`;
             }
-            console.log(`is our maxX ${maxX} greater than our x ${x}?`)
+           
         }
     }
 
     function dropPiece(e) {
-        console.log(e)
-        if (activePiece) {
+        const gameboard = gameboardRef.current
+        if (activePiece && gameboard) {
+            const x = Math.floor((e.clientX - gameboard.offsetLeft)/60) 
+            const y = Math.abs(Math.ceil((e.clientY - gameboard.offsetTop - 600)/60))
             setBluePieces(value => {
                 const pieces = value.map((p) => {
+                    if (p.x === gridX && p.y === gridY) {
+                        const validMove = ruler.isValidMove(gridX, gridY, x, y, p, value)
+                        if (validMove) {
+                            // check to see if there is an opponent 
+                            const opp = redPieces.filter(red => {
+                                return (red.x === x && red.y === y)
+                            })
+                            if (opp[0]) {
+                                console.log('opponent')
+                                const blueWon = ruler.attackSuccessful(p, opp[0])
+                                if (blueWon === 'YES') {
+                                    p.x = x
+                                    p.y = y
+                                    setRedPieces(value => {
+                                        const redPieces = value.map(redpiece => {
+                                            if (redpiece.x === x && redpiece.y === y) {
+                                                redpiece.x = -9999
+                                                redpiece.y = -9999
+                                                redpiece.alive = false
+                                                redpiece.revealed = true
+                                            }
+                                            return redpiece
+                                        })
+                                        return redPieces
+                                    })
+                                    return p
+                                }
+                                else if (blueWon === 'NO'){
+                                    p.x = -9999
+                                    p.y = -9999
+                                    p.alive = false
+                                    setRedPieces(value => {
+                                        const redPieces = value.map(redpiece => {
+                                            if (redpiece.x === x && redpiece.y === y) {
+                                                redpiece.revealed = true
+                                            }
+                                            return redpiece
+                                        })
+                                        return redPieces
+                                    })
+                                    return p
+                                } else if (blueWon === 'TIE') {
+                                    p.x = -9999
+                                    p.y = -9999
+                                    p.alive = false
+                                    setRedPieces(value => {
+                                        const redPieces = value.map(redpiece => {
+                                            if (redpiece.x === x && redpiece.y === y) {
+                                                redpiece.x = -9999
+                                                redpiece.y = -9999
+                                                redpiece.alive = false
+                                                redpiece.revealed = true
+                                            }
+                                            return redpiece
+                                        })
+                                        return redPieces
+                                    })
+                                    return p
+                                } else if (blueWon === 'WIN') {
+                                    console.log('the game is won')
+                                }
+                            }
+                            p.x = x
+                            p.y = y
+                        } else {
+                            activePiece.style.position = 'relative'
+                            activePiece.style.left = 0
+                            activePiece.style.top = 0
+                        }
+
+                    }
                     return p
                 })
                 
                 return pieces
 
             })
+            setRedPieces(value => {
+                const pieces = value.map((p) => {
+                    if (p.x === gridX && p.y === gridY) {
+                        const validMove = ruler.isValidMove(gridX, gridY, x, y, p, value)
+                        if (validMove) {
+                            // check to see if there is an opponent 
+                            const opp = bluePieces.filter(blue => {
+                                return (blue.x === x && blue.y === y)
+                            })
+                            if (opp[0]) {
+                                console.log('opponent')
+                                const redWon = ruler.attackSuccessful(p, opp[0])
+                                if (redWon === 'YES') {
+                                    p.x = x
+                                    p.y = y
+                                    setBluePieces(value => {
+                                        const bluePieces = value.map(bluepiece => {
+                                            if (bluepiece.x === x && bluepiece.y === y) {
+                                                bluepiece.x = -9999
+                                                bluepiece.y = -9999
+                                                bluepiece.alive = false
+                                                bluepiece.revealed = true
+                                            }
+                                            return bluepiece
+                                        })
+                                        return bluePieces
+                                    })
+                                    return p
+                                }
+                                else if (redWon === 'NO'){
+                                    p.x = -9999
+                                    p.y = -9999
+                                    p.alive = false
+                                    setBluePieces(value => {
+                                        const bluePieces = value.map(bluepiece => {
+                                            if (bluepiece.x === x && bluepiece.y === y) {
+                                                bluepiece.revealed = true
+                                            }
+                                            return bluepiece
+                                        })
+                                        return bluePieces
+                                    })
+                                    return p
+                                } else if (redWon === 'TIE') {
+                                    p.x = -9999
+                                    p.y = -9999
+                                    p.alive = false
+                                    setBluePieces(value => {
+                                        const bluePieces = value.map(bluepiece => {
+                                            if (bluepiece.x === x && bluepiece.y === y) {
+                                                bluepiece.x = -9999
+                                                bluepiece.y = -9999
+                                                bluepiece.alive = false
+                                                bluepiece.revealed = true
+                                            }
+                                            return bluepiece
+                                        })
+                                        return bluePieces
+                                    })
+                                    return p
+                                } else if (redWon === 'WIN') {
+                                    console.log('the game is won')
+                                }
+                            }
+                            p.x = x
+                            p.y = y
+                        } else {
+                            activePiece.style.position = 'relative'
+                            activePiece.style.left = 0
+                            activePiece.style.top = 0
+                        }
+
+                    }
+                    return p
+                })
+                
+                return pieces
+
+            })
+            
+           
             setActivePiece(null)
         }
     }

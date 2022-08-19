@@ -1,11 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
 import React from 'react'
 
 
-export default function Soldier ({piece}) {
-    const [active, setActive] = useState(false)
-
-    
+export default function Soldier ({piece}) {    
     return (
         <div 
             style={{backgroundColor: piece.color, height: 40, width: 40}} 
