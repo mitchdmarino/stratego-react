@@ -2,7 +2,6 @@ export default class Ruler {
   spaceIsOccupiedByTeam(x, y, teamBoardState) {
     const piece = teamBoardState.find((p) => p.x === x && p.y === y);
     if (piece) {
-      console.log("tile occupied");
       return true;
     } else {
       return false;
@@ -12,7 +11,6 @@ export default class Ruler {
   spaceIsOccupiedByOpponent(x, y, opponentBoardState) {
     const piece = opponentBoardState.find((p) => p.x === x && p.y === y);
     if (piece) {
-      console.log("Enemy Spotted!");
       return true;
     } else {
       return false;
@@ -20,8 +18,16 @@ export default class Ruler {
   }
 
   isValidMove(prevX, prevY, curX, curY, piece, teamBoardState) {
-    console.log(`Checking the move of rank ${piece.rank}`);
-    if (this.isLakeSpace(curX, curY)) {
+    console.log(
+      `Checking the move of rank ${piece.rank} from ${prevX},${prevY} to ${curX}, ${curY} }`
+    );
+    if (
+      this.isLakeSpace(curX, curY) ||
+      curY > 9 ||
+      curY < 0 ||
+      curX > 9 ||
+      curX < 0
+    ) {
       return false;
     }
     // Normal Ranks: Pieces that can move one square in any horizontal or vertical direction
@@ -150,9 +156,11 @@ export default class Ruler {
       return "YES";
     }
     if (attacker.rank > defender.rank) {
+      console.log(`attacker ${attacker.rank} loses to ${defender.rank}`);
       return "NO";
     }
     if (attacker.rank === defender.rank) {
+      console.log(`attacker ${attacker.rank} ties ${defender.rank}`);
       return "TIE";
     }
   }
