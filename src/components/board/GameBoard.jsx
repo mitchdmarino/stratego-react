@@ -2,21 +2,13 @@
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
 
-//components 
-import Space from './Space'
 
+// Red Team array, Blue Team array, Rules of the game 
 import redTeam from '../utils/RedSoldiers'
 import blueTeam from '../utils/BlueSoldiers'
-import shuffle from '../utils/shuffle'
 import Ruler from '../../Rules/ruler'
-
-
-
-
-
-
-  
-
+import gameBoardConstructor from '../utils/GameSpaceArray'
+import { verticalAxis, horizontalAxis } from '../utils/constants'
 
 // styled components
 const Board = styled.div`
@@ -26,16 +18,8 @@ const Board = styled.div`
     width: 600px;
       
 `
-const verticalAxis = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-const horizontalAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"]
-// array for game board
-
-
-
-
 
 export default function GameBoard() {
-    
     const gameboardRef = useRef(null)
     const [activePiece, setActivePiece] = useState(null)
     const [redPieces, setRedPieces] = useState(redTeam)
@@ -49,7 +33,6 @@ export default function GameBoard() {
         const gameboard = gameboardRef.current
         console.log(gameboard.style)
         if ((e.target.classList.contains('blue-piece') || e.target.classList.contains('red-piece') )&& gameboard && !activePiece) {
-            // console.log(e.target)
             const element = e.target
             setActivePiece(element)
             setGridX(Math.floor((e.clientX - gameboard.offsetLeft)/60)) 
@@ -271,52 +254,13 @@ export default function GameBoard() {
             setActivePiece(null)
         }
     }
-    let gameSpaceArray = []
-    for (let j=verticalAxis.length-1;j>=0;j--) {
-        for (let i=0;i<horizontalAxis.length;i++){
-            //We have designated "lake" spaces that are not passable. Make them lightblue. 
-            let piece = null
-            redPieces.forEach(p => {
-                if (p.x === i && p.y === j) {
-                    piece = p
-                }
-            })
-            bluePieces.forEach(p => {
-                if (p.x === i && p.y === j) {
-                    piece = p
-                }
-            })
-            
-            if (
-                (i===2 && j===5) || (i===6 && j===5) ||
-                (i===2 && j===4) || (i===6 && j===4)  ||
-                (i===3 && j===5) || (i===7 && j===5)  ||
-                (i===3 && j===4) || (i===7 && j===4) ) {
-                gameSpaceArray.push(<Space 
-                                        key={`${i}${j}`} 
-                                        color={'blue'} 
-                                        ind={`${horizontalAxis[i]}${verticalAxis[j]}`}/>)
-                }
-            // create checkerboard appearance 
-            else if (
-                (i%2===0 && j%2===0) || 
-                (i%2>0 && j%2>0) ) {
-                    gameSpaceArray.push(<Space 
-                                            key={`${i}${j}`} 
-                                            color={'green'} 
-                                            ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
-                                            pawn={piece}/>)  
-                } 
-                else {
-                    gameSpaceArray.push(<Space 
-                                            key={`${i}${j}`} 
-                                            color={'lightgreen'} 
-                                            ind={`${horizontalAxis[i]}${verticalAxis[j]}`} 
-                                            pawn={piece}/>)  
-                }         
-        }
-    }
-
+    
+    const gameSpaceArray = gameBoardConstructor(
+        verticalAxis,
+        horizontalAxis,
+        redPieces,
+        bluePieces
+      ) 
     // render each individual space with starting piece config 
     const spaces = gameSpaceArray.map(space => {
         return space
