@@ -17,9 +17,9 @@ export default function cpuTurn(
     if (randomSoldier.alive === false) {
       continue;
     }
-    const randomDirection = Math.floor(Math.random() * 3);
+    const randomDirection = Math.floor(Math.random() * 10);
 
-    if (randomDirection === 0) {
+    if (randomDirection < 3) {
       const num = randomSoldier.x - 1;
       const validMove = ruler.isValidMove(
         randomSoldier.x,
@@ -27,7 +27,8 @@ export default function cpuTurn(
         randomSoldier.x - 1,
         randomSoldier.y,
         randomSoldier,
-        redPieces
+        redPieces,
+        bluePieces
       );
       if (validMove) {
         setRedPieces((value) => {
@@ -99,8 +100,7 @@ export default function cpuTurn(
       } else {
         continue;
       }
-    }
-    if (randomDirection === 2) {
+    } else if (randomDirection < 7) {
       const num = randomSoldier.y - 1;
       const validMove = ruler.isValidMove(
         randomSoldier.x,
@@ -108,7 +108,8 @@ export default function cpuTurn(
         randomSoldier.x,
         randomSoldier.y - 1,
         randomSoldier,
-        redPieces
+        redPieces,
+        bluePieces
       );
       if (validMove) {
         setRedPieces((value) => {
@@ -118,6 +119,8 @@ export default function cpuTurn(
                 return blue.x === p.x && blue.y === num;
               });
               if (opp[0]) {
+                p.revealed = true;
+                console.log("red attacked");
                 const redWon = ruler.attackSuccessful(p, opp[0]);
                 if (redWon === "YES") {
                   p.y = num;
@@ -180,8 +183,7 @@ export default function cpuTurn(
       } else {
         continue;
       }
-    }
-    if (randomDirection === 1) {
+    } else {
       const num = randomSoldier.x + 1;
       const validMove = ruler.isValidMove(
         randomSoldier.x,
@@ -189,7 +191,8 @@ export default function cpuTurn(
         randomSoldier.x + 1,
         randomSoldier.y,
         randomSoldier,
-        redPieces
+        redPieces,
+        bluePieces
       );
       if (validMove) {
         setRedPieces((value) => {

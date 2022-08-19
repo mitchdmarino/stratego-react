@@ -97,7 +97,7 @@ export default function GameBoard() {
             setBluePieces(value => {
                 const pieces = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        const validMove = ruler.isValidMove(gridX, gridY, x, y, p, value)
+                        const validMove = ruler.isValidMove(gridX, gridY, x, y, p, value, redPieces)
                         if (validMove) {
                             playerTurn.current = false
                             // check to see if there is an opponent 
@@ -178,13 +178,12 @@ export default function GameBoard() {
             // after a successful player turn, it is now the opponent's turn
             
             setTimeout(function() {
-                console.log('time for the cpu to play in 2 seconds')
                 cpuTurn(playerTurn.current, setRedPieces, redPieces, setBluePieces, bluePieces, ruler)
             }, 2000)
 
             setTimeout(function() {
                 playerTurn.current = true
-            }, 2500)
+            }, 2100)
         
         }
     }

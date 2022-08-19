@@ -13,14 +13,20 @@ export default class Ruler {
     if (piece) {
       return true;
     } else {
+      console.log("no opp here");
       return false;
     }
   }
 
-  isValidMove(prevX, prevY, curX, curY, piece, teamBoardState) {
-    console.log(
-      `Checking the move of rank ${piece.rank} from ${prevX},${prevY} to ${curX}, ${curY} }`
-    );
+  isValidMove(
+    prevX,
+    prevY,
+    curX,
+    curY,
+    piece,
+    teamBoardState,
+    opponentBoardState
+  ) {
     if (
       this.isLakeSpace(curX, curY) ||
       curY > 9 ||
@@ -44,7 +50,14 @@ export default class Ruler {
     }
     // Scout (rank 9) can move as many squares as are open in one continuous horizontal or vertical direction (similar to Rook in Chess)
     if (piece.rank === 9) {
-      return this.validScoutMove(prevX, prevY, curX, curY, teamBoardState);
+      return this.validScoutMove(
+        prevX,
+        prevY,
+        curX,
+        curY,
+        teamBoardState,
+        opponentBoardState
+      );
     }
   }
 
@@ -62,7 +75,7 @@ export default class Ruler {
       return true;
   }
 
-  validScoutMove(prevX, prevY, curX, curY, teamBoardState) {
+  validScoutMove(prevX, prevY, curX, curY, teamBoardState, opponentBoardState) {
     if (
       // if X is the same, then y changed. check if Any of the Y spaces in between are occupied
       prevX === curX
@@ -71,25 +84,33 @@ export default class Ruler {
         for (let i = 1; i <= curY - prevY; i++) {
           if (
             this.spaceIsOccupiedByTeam(curX, prevY + i, teamBoardState) ||
-            this.isLakeSpace(curX, prevY + i)
+            this.isLakeSpace(curX, prevY + i) ||
+            this.spaceIsOccupiedByOpponent(
+              curX,
+              prevY + i - 1,
+              opponentBoardState
+            )
           ) {
             return false;
-          } else {
-            return true;
           }
         }
+        return true;
       }
       if (curY < prevY) {
         for (let i = 1; i <= prevY - curY; i++) {
           if (
             this.spaceIsOccupiedByTeam(curX, prevY - i, teamBoardState) ||
-            this.isLakeSpace(curX, prevY - i)
+            this.isLakeSpace(curX, prevY - i) ||
+            this.spaceIsOccupiedByOpponent(
+              curX,
+              prevY - i + 1,
+              opponentBoardState
+            )
           ) {
             return false;
-          } else {
-            return true;
           }
         }
+        return true;
       }
     }
     if (
@@ -100,25 +121,33 @@ export default class Ruler {
         for (let i = 1; i <= curX - prevX; i++) {
           if (
             this.spaceIsOccupiedByTeam(prevX + i, curY, teamBoardState) ||
-            this.isLakeSpace(prevX + i, curY)
+            this.isLakeSpace(prevX + i, curY) ||
+            this.spaceIsOccupiedByOpponent(
+              prevX + i - 1,
+              curY,
+              opponentBoardState
+            )
           ) {
             return false;
-          } else {
-            return true;
           }
         }
+        return true;
       }
       if (curX < prevX) {
         for (let i = 1; i <= prevX - curX; i++) {
           if (
             this.spaceIsOccupiedByTeam(prevX - i, curY, teamBoardState) ||
-            this.isLakeSpace(prevX - i, curY)
+            this.isLakeSpace(prevX - i, curY) ||
+            this.spaceIsOccupiedByOpponent(
+              prevX - i + 1,
+              curY,
+              opponentBoardState
+            )
           ) {
             return false;
-          } else {
-            return true;
           }
         }
+        return true;
       }
     }
   }
