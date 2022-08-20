@@ -39,8 +39,10 @@ export default function cpuTurn(
               });
               if (opp[0]) {
                 const redWon = ruler.attackSuccessful(p, opp[0]);
+                const oppID = opp[0].id;
                 if (redWon === "YES") {
                   p.x = num;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
                       if (bluepiece.x === num && bluepiece.y === p.y) {
@@ -58,6 +60,7 @@ export default function cpuTurn(
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
                       if (bluepiece.x === num && bluepiece.y === p.y) {
@@ -74,7 +77,7 @@ export default function cpuTurn(
                   p.alive = false;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
-                      if (bluepiece.x === num && bluepiece.y === p.y) {
+                      if (bluepiece.id === oppID) {
                         bluepiece.x = -9999;
                         bluepiece.y = -9999;
                         bluepiece.alive = false;
@@ -102,6 +105,7 @@ export default function cpuTurn(
       }
     } else if (randomDirection < 7) {
       const num = randomSoldier.y - 1;
+      const numX = randomSoldier.x;
       const validMove = ruler.isValidMove(
         randomSoldier.x,
         randomSoldier.y,
@@ -120,13 +124,15 @@ export default function cpuTurn(
               });
               if (opp[0]) {
                 p.revealed = true;
+                const oppID = opp[0].id;
                 console.log("red attacked");
                 const redWon = ruler.attackSuccessful(p, opp[0]);
                 if (redWon === "YES") {
                   p.y = num;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
-                      if (bluepiece.x === p.x && bluepiece.y === num) {
+                      if (bluepiece.x === numX && bluepiece.y === num) {
                         bluepiece.x = -9999;
                         bluepiece.y = -9999;
                         bluepiece.alive = false;
@@ -141,6 +147,7 @@ export default function cpuTurn(
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
                       if (bluepiece.x === p.x && bluepiece.y === num) {
@@ -152,12 +159,10 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "TIE") {
-                  p.x = -9999;
-                  p.y = -9999;
-                  p.alive = false;
+                  console.log(p.x, num);
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
-                      if (bluepiece.x === p.x && bluepiece.y === num) {
+                      if (bluepiece.id === oppID) {
                         bluepiece.x = -9999;
                         bluepiece.y = -9999;
                         bluepiece.alive = false;
@@ -167,6 +172,9 @@ export default function cpuTurn(
                     });
                     return bluePieces;
                   });
+                  p.x = -9999;
+                  p.y = -9999;
+                  p.alive = false;
                   return p;
                 } else if (redWon === "WIN") {
                   console.log("the game is won");
@@ -203,8 +211,10 @@ export default function cpuTurn(
               });
               if (opp[0]) {
                 const redWon = ruler.attackSuccessful(p, opp[0]);
+                const oppID = opp[0].id;
                 if (redWon === "YES") {
                   p.x = num;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
                       if (bluepiece.x === num && bluepiece.y === p.y) {
@@ -222,6 +232,7 @@ export default function cpuTurn(
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
+                  p.revealed = true;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
                       if (bluepiece.x === num && bluepiece.y === p.y) {
@@ -238,7 +249,7 @@ export default function cpuTurn(
                   p.alive = false;
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
-                      if (bluepiece.x === num && bluepiece.y === p.y) {
+                      if (bluepiece.id === oppID) {
                         bluepiece.x = -9999;
                         bluepiece.y = -9999;
                         bluepiece.alive = false;

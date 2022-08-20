@@ -2,8 +2,9 @@ import shuffle from "./shuffle";
 
 class BlueSoldier {
   static total = 40;
-  constructor(x, y) {
-    this.rank = "#";
+  constructor(x, y, id) {
+    this.rank = 9;
+    this.id = id;
     this.x = x;
     this.y = y;
     this.alive = true;
@@ -16,7 +17,8 @@ class BlueSoldier {
 let blueTeam = [];
 for (let i = 0; i < 10; i++) {
   for (let j = 0; j < 4; j++) {
-    blueTeam.push(new BlueSoldier(i, j));
+    const id = `${i},${j}`;
+    blueTeam.push(new BlueSoldier(i, j, id));
   }
 }
 

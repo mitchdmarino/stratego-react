@@ -1,8 +1,8 @@
-import shuffle from "./shuffle";
 class RedSoldier {
   static total = 40;
-  constructor(x, y) {
-    this.rank = "#";
+  constructor(x, y, id) {
+    this.rank = 9;
+    this.id = id;
     this.x = x;
     this.y = y;
     this.alive = true;
@@ -15,7 +15,8 @@ class RedSoldier {
 let redTeam = [];
 for (let i = 0; i < 10; i++) {
   for (let j = 9; j > 5; j--) {
-    redTeam.push(new RedSoldier(i, j));
+    const id = `${i},${j}`;
+    redTeam.push(new RedSoldier(i, j, id));
   }
 }
 
