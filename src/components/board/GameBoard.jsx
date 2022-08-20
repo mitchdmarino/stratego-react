@@ -1,8 +1,6 @@
 // https://www.youtube.com/watch?v=coi5AoV53Es&list=PLBmRxydnERkysOgOS917Ojc_-uisgb8Aj&index=3
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
-
-
 // Red Team array, Blue Team array, Rules of the game 
 import redTeam from '../utils/RedSoldiers'
 import blueTeam from '../utils/BlueSoldiers'
@@ -11,13 +9,14 @@ import gameBoardConstructor from '../utils/GameSpaceArray'
 import { verticalAxis, horizontalAxis } from '../utils/constants'
 import cpuTurn from '../utils/cpuTurn'
 
+
 // styled components
 const Board = styled.div`
     display: grid;
     grid-template-rows: repeat(10, 60px);
     grid-template-columns: repeat(10, 60px);
     width: 600px;
-      
+    
 `
 
 export default function GameBoard() {
@@ -208,6 +207,7 @@ export default function GameBoard() {
             onMouseUp={e =>dropPiece(e)}>
             <Board 
             ref={gameboardRef}
+            style={{backgroundImage: 'url("/images/background-3.png")',backgroundSize: 'contain'}}
             
             >
                 {spaces}

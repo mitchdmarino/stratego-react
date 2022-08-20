@@ -27,7 +27,7 @@ export default function Space ({ ind, color, pawn, revealed }) {
     
     
     return (
-        <NewSpace onClick={event => handleClick(ind)} style={{backgroundColor: color}}>
+        <NewSpace onClick={event => handleClick(ind)} >
             {renderPawn}
         </NewSpace>
     )

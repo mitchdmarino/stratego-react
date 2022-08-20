@@ -45,7 +45,7 @@ export default function gameBoardConstructor(
         gameSpaceArray.push(
           <Space
             key={`${i}${j}`}
-            color={"green"}
+            color={"#157F1F"}
             ind={`${horizontalAxis[i]}${verticalAxis[j]}`}
             pawn={piece}
           />
@@ -54,7 +54,7 @@ export default function gameBoardConstructor(
         gameSpaceArray.push(
           <Space
             key={`${i}${j}`}
-            color={"lightgreen"}
+            color={"#8FCB9B"}
             ind={`${horizontalAxis[i]}${verticalAxis[j]}`}
             pawn={piece}
           />
