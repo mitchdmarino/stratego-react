@@ -14,10 +14,6 @@ const NewSpace = styled.div`
 
 export default function Space ({ ind, color, pawn, revealed }) {
     
-    const handleClick = (ind) => {
-        console.log(`space ${ind} was clicked`)
-    }
-
     let renderPawn = null
 
     if (pawn) {
@@ -27,7 +23,7 @@ export default function Space ({ ind, color, pawn, revealed }) {
     
     
     return (
-        <NewSpace onClick={event => handleClick(ind)} >
+        <NewSpace >
             {renderPawn}
         </NewSpace>
     )
