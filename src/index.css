@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: black;
 }
 
 code {
@@ -25,6 +26,6 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px;
-  background-color: black;
+  padding: 50px;
+  
 }

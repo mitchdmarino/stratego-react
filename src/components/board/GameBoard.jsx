@@ -9,6 +9,9 @@ import gameBoardConstructor from '../utils/GameSpaceArray'
 import { verticalAxis, horizontalAxis } from '../utils/constants'
 import cpuTurn from '../utils/cpuTurn'
 
+// components 
+import BlueJail from '../game_flow/BlueJail'
+import RedJail from '../game_flow/RedJail'
 
 // styled components
 const Board = styled.div`
@@ -200,18 +203,27 @@ export default function GameBoard() {
    
 
     return (
-        <div
-            className='gameboard-container'
-            onMouseDown={e => grabPiece(e)}
-            onMouseMove={e => movePiece(e)}
-            onMouseUp={e =>dropPiece(e)}>
-            <Board 
-            ref={gameboardRef}
-            style={{backgroundImage: 'url("/images/background-3.png")',backgroundSize: 'contain'}}
-            
-            >
-                {spaces}
-            </Board>
-        </div>
+        <>
+            <div
+                className='gameboard-container'
+                onMouseDown={e => grabPiece(e)}
+                onMouseMove={e => movePiece(e)}
+                onMouseUp={e =>dropPiece(e)}>
+                <Board 
+                ref={gameboardRef}
+                style={{backgroundImage: 'url("/images/background-3.png")',backgroundSize: 'contain'}}
+                
+                >
+                    {spaces}
+                </Board>
+            </div>
+            <div>
+                <h2 style={{color: 'white'}}>Pieces Lost</h2>
+                <BlueJail bluePieces={bluePieces}/>
+                <h2 style={{color: 'white'}}>Pieces Won</h2>
+                <RedJail redPieces={redPieces}/>
+            </div>
+        </>
+
     )
 }

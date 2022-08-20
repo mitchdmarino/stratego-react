@@ -1,12 +1,17 @@
 import "./App.css";
+import styled from "styled-components";
 
 // component imports
 import GameBoard from "./components/board/GameBoard";
 
+const Title = styled.h1`
+  color: white;
+`;
+
 function App() {
   return (
     <div className="container">
-      <h1>Stratego</h1>
+      <Title>Stratego</Title>
       <GameBoard />
     </div>
   );
