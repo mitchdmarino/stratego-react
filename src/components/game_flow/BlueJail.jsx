@@ -5,7 +5,7 @@ const Jail = styled.div`
 display: flex;
 border: 2px dashed white;
 width: 50%;
-flex: flex-wrap;
+flex-wrap: wrap;
 justify-content: flex-start;
 `
 
@@ -16,7 +16,7 @@ export default function BlueJail ({bluePieces}) {
 
     const jailed = blueCaptured.map(p => {
         return (
-        <div style={{marginLeft: 10}}><Soldier piece={p}/></div>
+        <div style={{margin: 5}}><Soldier piece={p}/></div>
         )
     })
     return (

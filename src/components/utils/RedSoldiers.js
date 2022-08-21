@@ -126,7 +126,7 @@ const redSoldierLayouts = [
     4,
     3,
     8,
-    7,
+    6,
     3,
     "s",
     8,
@@ -134,7 +134,7 @@ const redSoldierLayouts = [
     9,
     5,
     6,
-    6,
+    "f",
     "b",
     8,
     "b",
@@ -145,7 +145,7 @@ const redSoldierLayouts = [
     8,
     8,
     "b",
-    "f",
+    7,
   ],
   [
     9,
@@ -190,10 +190,10 @@ const redSoldierLayouts = [
     9,
   ],
   [
-    9,
+    "f",
     9,
     "b",
-    "f",
+    9,
     "b",
     "b",
     7,
@@ -318,6 +318,6 @@ const redSoldierLayouts = [
 ];
 let randomLayout = Math.floor(Math.random() * 7);
 redTeam.forEach((item) => {
-  item.rank = redSoldierLayouts[randomLayout].pop();
+  item.rank = redSoldierLayouts[randomLayout].shift();
 });
 export default redTeam;

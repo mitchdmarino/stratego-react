@@ -128,7 +128,7 @@ const blueSoldierLayouts = [
     4,
     3,
     8,
-    7,
+    6,
     3,
     "s",
     8,
@@ -136,7 +136,7 @@ const blueSoldierLayouts = [
     9,
     5,
     6,
-    6,
+    "f",
     "b",
     8,
     "b",
@@ -147,7 +147,7 @@ const blueSoldierLayouts = [
     8,
     8,
     "b",
-    "f",
+    7,
   ],
   [
     9,
@@ -192,10 +192,10 @@ const blueSoldierLayouts = [
     9,
   ],
   [
-    9,
+    "f",
     9,
     "b",
-    "f",
+    9,
     "b",
     "b",
     7,
@@ -320,7 +320,7 @@ const blueSoldierLayouts = [
 ];
 let randomLayout = Math.floor(Math.random() * 7);
 blueTeam.forEach((item) => {
-  item.rank = blueSoldierLayouts[randomLayout].pop();
+  item.rank = blueSoldierLayouts[randomLayout].shift();
 });
 
 export default blueTeam;
