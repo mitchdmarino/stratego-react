@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/stratego-react/static/css/main.7bebd412.css",
+    "main.js": "/stratego-react/static/js/main.1b22d151.js",
+    "static/js/787.2ff80370.chunk.js": "/stratego-react/static/js/787.2ff80370.chunk.js",
+    "index.html": "/stratego-react/index.html",
+    "main.7bebd412.css.map": "/stratego-react/static/css/main.7bebd412.css.map",
+    "main.1b22d151.js.map": "/stratego-react/static/js/main.1b22d151.js.map",
+    "787.2ff80370.chunk.js.map": "/stratego-react/static/js/787.2ff80370.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7bebd412.css",
+    "static/js/main.1b22d151.js"
+  ]
+}
