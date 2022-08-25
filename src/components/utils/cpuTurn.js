@@ -4,7 +4,8 @@ export default function cpuTurn(
   redPieces,
   setBluePieces,
   bluePieces,
-  ruler
+  ruler,
+  setMessage
 ) {
   while (!playerTurn) {
     const randomSoldier =
@@ -41,6 +42,7 @@ export default function cpuTurn(
                 const redWon = ruler.attackSuccessful(p, opp[0]);
                 const oppID = opp[0].id;
                 if (redWon === "YES") {
+                  setMessage(`Red ${p.rank} defeats Blue ${opp[0].rank}`);
                   p.x = num;
                   p.revealed = true;
                   setBluePieces((value) => {
@@ -57,6 +59,9 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "NO") {
+                  setMessage(
+                    `Red ${p.rank} is defeated by Blue ${opp[0].rank}`
+                  );
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
@@ -72,6 +77,7 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "TIE") {
+                  setMessage(`Red ${p.rank} and ${opp[0].rank} both lose`);
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
@@ -89,7 +95,7 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "WIN") {
-                  console.log("the game is won");
+                  setMessage(`GAME OVER! Your flag has been captured!`);
                 }
               }
               p.x = num;
@@ -128,6 +134,7 @@ export default function cpuTurn(
                 console.log("red attacked");
                 const redWon = ruler.attackSuccessful(p, opp[0]);
                 if (redWon === "YES") {
+                  setMessage(`Red ${p.rank} defeats Blue ${opp[0].rank}`);
                   p.y = num;
                   p.revealed = true;
                   setBluePieces((value) => {
@@ -144,6 +151,9 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "NO") {
+                  setMessage(
+                    `Red ${p.rank} is defeated by Blue ${opp[0].rank}`
+                  );
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
@@ -159,6 +169,9 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "TIE") {
+                  setMessage(
+                    `Red ${p.rank} and Blue ${opp[0].rank} both lose.`
+                  );
                   console.log(p.x, num);
                   setBluePieces((value) => {
                     const bluePieces = value.map((bluepiece) => {
@@ -178,6 +191,7 @@ export default function cpuTurn(
                   return p;
                 } else if (redWon === "WIN") {
                   console.log("the game is won");
+                  setMessage(`GAME OVER, your flag has been captured!`);
                 }
               }
               p.y = num;
@@ -213,6 +227,7 @@ export default function cpuTurn(
                 const redWon = ruler.attackSuccessful(p, opp[0]);
                 const oppID = opp[0].id;
                 if (redWon === "YES") {
+                  setMessage(`Red ${p.rank} defeats Blue ${opp[0].rank}`);
                   p.x = num;
                   p.revealed = true;
                   setBluePieces((value) => {
@@ -229,6 +244,9 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "NO") {
+                  setMessage(
+                    `Red ${p.rank} is defeated by Blue ${opp[0].rank}`
+                  );
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
@@ -244,6 +262,9 @@ export default function cpuTurn(
                   });
                   return p;
                 } else if (redWon === "TIE") {
+                  setMessage(
+                    `Red ${p.rank} and Blue ${opp[0].rank} both lose.`
+                  );
                   p.x = -9999;
                   p.y = -9999;
                   p.alive = false;
@@ -262,6 +283,7 @@ export default function cpuTurn(
                   return p;
                 } else if (redWon === "WIN") {
                   console.log("the game is won");
+                  setMessage(`GAME OVER, your flag has been captured!`);
                 }
               }
               p.x = num;

@@ -21,6 +21,13 @@ const Board = styled.div`
     width: 600px;
     
 `
+const Captured = styled.div`
+    display: flex;
+    justify-content: space-evenly; 
+    align-tems: center;
+`
+
+
 
 export default function GameBoard() {
     const gameboardRef = useRef(null)
@@ -29,6 +36,7 @@ export default function GameBoard() {
     const [bluePieces, setBluePieces] = useState(blueTeam)
     const [gridX, setGridX] = useState(0)
     const [gridY, setGridY] = useState(0)
+    const [message, setMessage] = useState('Click and drag a piece to start the game.')
     const playerTurn = useRef(true)
     const ruler = new Ruler()
     
@@ -109,6 +117,7 @@ export default function GameBoard() {
                             if (opp[0]) {
                                 const blueWon = ruler.attackSuccessful(p, opp[0])
                                 if (blueWon === 'YES') {
+                                    setMessage(`Blue ${p.rank} defeats Red ${opp[0].rank}`)
                                     p.x = x
                                     p.y = y
                                     setRedPieces(value => {
@@ -126,6 +135,7 @@ export default function GameBoard() {
                                     return p
                                 }
                                 else if (blueWon === 'NO'){
+                                    setMessage(`Blue ${p.rank} is defeated by Red ${opp[0].rank}.`)
                                     p.x = -9999
                                     p.y = -9999
                                     p.alive = false
@@ -140,6 +150,7 @@ export default function GameBoard() {
                                     })
                                     return p
                                 } else if (blueWon === 'TIE') {
+                                    setMessage(`Blue ${p.rank} and Red ${opp[0].rank} both lose.`)
                                     p.x = -9999
                                     p.y = -9999
                                     p.alive = false
@@ -158,6 +169,7 @@ export default function GameBoard() {
                                     return p
                                 } else if (blueWon === 'WIN') {
                                     console.log('the game is won')
+                                    setMessage('CONGRATS, you captured the Red Flag!')
                                 }
                             }
                             p.x = x
@@ -180,7 +192,7 @@ export default function GameBoard() {
             // after a successful player turn, it is now the opponent's turn
             
             setTimeout(function() {
-                cpuTurn(playerTurn.current, setRedPieces, redPieces, setBluePieces, bluePieces, ruler)
+                cpuTurn(playerTurn.current, setRedPieces, redPieces, setBluePieces, bluePieces, ruler, setMessage)
             }, 2000)
 
             setTimeout(function() {
@@ -200,6 +212,7 @@ export default function GameBoard() {
     const spaces = gameSpaceArray.map(space => {
         return space
     })
+
    
 
     return (
@@ -212,17 +225,21 @@ export default function GameBoard() {
                 <Board 
                 ref={gameboardRef}
                 style={{backgroundImage: 'url("/images/background-3.png")',backgroundSize: 'contain'}}
-                
                 >
                     {spaces}
                 </Board>
             </div>
-            <div>
-                <h2 style={{color: 'white'}}>Pieces Lost</h2>
-                <BlueJail bluePieces={bluePieces}/>
-                <h2 style={{color: 'white'}}>Pieces Won</h2>
-                <RedJail redPieces={redPieces}/>
-            </div>
+            <p style={{color: 'white', textAlign: 'center', fontSize: 25}}>{message}</p>
+            <Captured>
+                <div>
+                    <h2 style={{color: 'white'}}>Pieces Lost</h2>
+                    <BlueJail bluePieces={bluePieces}/>
+                </div>
+                <div>
+                    <h2 style={{color: 'white'}}>Pieces Won</h2>
+                    <RedJail redPieces={redPieces}/>
+                </div>
+            </Captured>
         </>
 
     )

@@ -6,6 +6,7 @@ import GameBoard from "./components/board/GameBoard";
 
 const Title = styled.h1`
   color: white;
+  text-align: center;
 `;
 
 function App() {

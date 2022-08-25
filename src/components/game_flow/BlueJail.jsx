@@ -3,8 +3,7 @@ import styled from "styled-components"
 
 const Jail = styled.div`
 display: flex;
-border: 2px dashed white;
-width: 50%;
+width: 300px;
 flex-wrap: wrap;
 justify-content: flex-start;
 `
