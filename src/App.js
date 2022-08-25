@@ -12,7 +12,7 @@ const Title = styled.h1`
 function App() {
   return (
     <div className="container">
-      <Title>Stratego</Title>
+      <Title> Stratego</Title>
       <GameBoard />
     </div>
   );

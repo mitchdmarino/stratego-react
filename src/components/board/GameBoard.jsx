@@ -224,7 +224,7 @@ export default function GameBoard() {
                 onMouseUp={e =>dropPiece(e)}>
                 <Board 
                 ref={gameboardRef}
-                style={{backgroundImage: 'url("/images/background-3.png")',backgroundSize: 'contain'}}
+                style={{backgroundImage: 'url("https://imgur.com/fOwvxXm")',backgroundSize: 'contain'}}
                 >
                     {spaces}
                 </Board>
