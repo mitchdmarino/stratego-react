@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
     },
-"homepage": "http://mitchdmarino.github.io/stratego-react",
+"homepage": "https://mitchdmarino.github.io/stratego-react",
   "eslintConfig": {
     "extends": [
       "react-app",
